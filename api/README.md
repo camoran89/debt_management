@@ -1,7 +1,9 @@
 
+
 # Debt Management API (NestJS + DDD)
 
 API REST para la gestión de deudas entre amigos, implementada con NestJS y arquitectura DDD.
+
 
 ## Características principales
 
@@ -11,13 +13,15 @@ API REST para la gestión de deudas entre amigos, implementada con NestJS y arqu
 - Marcar deudas como pagadas
 - Listar deudas por usuario (pendientes y pagadas)
 - Validaciones de dominio:
-  - No se pueden registrar deudas con valores negativos
-  - Una deuda pagada no puede ser modificada ni eliminada
+   - No se pueden registrar deudas con valores negativos
+   - Una deuda pagada no puede ser modificada ni eliminada
 - Endpoints de agregación (total de deudas pagadas, saldo pendiente)
 - Exportar deudas (JSON/CSV)
 - Documentación Swagger
 - 100% de cobertura en pruebas unitarias (Jest)
 - Listo para despliegue en Docker/Kubernetes
+- Pruebas manuales vía cURL/Postman disponibles en `test/postman-curl.md`
+
 
 ## Estructura del proyecto
 
@@ -66,27 +70,17 @@ api/
 │   ├── data-source.ts
 │   └── main.ts
 ├── test/
-│   ├── auth.controller.spec.ts
-│   ├── create-debt.dto.spec.ts
-│   ├── create-debt.use-case.spec.ts
-│   ├── create-user.dto.spec.ts
-│   ├── create-user.use-case.spec.ts
-│   ├── debt.controller.spec.ts
-│   ├── debt.entity.spec.ts
-│   ├── debt.repository.spec.ts
-│   ├── debt.service.spec.ts
-│   ├── jwt.strategy.spec.ts
-│   ├── login-user.use-case.spec.ts
-│   ├── pay-debt.use-case.spec.ts
-│   ├── user.controller.spec.ts
-│   ├── user.entity.spec.ts
-│   ├── user.repository.spec.ts
-│   └── user.service.spec.ts
+│   ├── *.spec.ts (pruebas unitarias)
+│   └── postman-curl.md (colección cURL para pruebas manuales)
 ├── package.json
 ├── jest.config.js
 ├── Dockerfile
 └── README.md
 ```
+
+## Pruebas manuales con cURL/Postman
+
+En la carpeta `test/postman-curl.md` encontrarás ejemplos de comandos cURL para probar los endpoints principales de la API (registro, login, crear deuda, listar deudas, pagar deuda). Puedes usarlos directamente o importarlos en Postman.
 
 
 ## Despliegue en Kubernetes (Minikube)
@@ -108,36 +102,60 @@ El despliegue de la API está completamente orientado a Kubernetes. No es necesa
 
 2. **Manifiestos de Kubernetes**
 
+
    En la carpeta `deploy/` encontrarás los siguientes archivos YAML:
 
    - `deployment.yaml`: Define el Deployment de Kubernetes, es decir, cómo se ejecutan los pods de la API, la imagen a usar, variables de entorno y el número de réplicas.
    - `service.yaml`: Expone la API dentro del clúster (ClusterIP) y, opcionalmente, hacia fuera (NodePort). Permite que otros servicios o usuarios accedan a la API.
    - `configmap.yaml`: Contiene la configuración no sensible (por ejemplo, nombre de base de datos, host, puerto, etc). Se monta como variables de entorno en el contenedor.
    - `secret.yaml`: Almacena información sensible como secretos JWT o contraseñas de base de datos. Se monta como variables de entorno seguras.
+   - `ingress.yaml`: Configura el acceso externo vía Ingress (por ejemplo, http://debt.local/api).
+   - `postgres-secret.yaml`: Secret para la base de datos PostgreSQL.
 
    Cada manifiesto cumple una función específica y desacopla la configuración, los secretos y la definición de la aplicación, siguiendo buenas prácticas de Kubernetes.
 
 3. **Despliegue de los recursos**
 
+
    Aplica todos los manifiestos en el orden que prefieras (Kubernetes resolverá dependencias automáticamente):
    ```bash
    kubectl apply -f deploy/configmap.yaml
    kubectl apply -f deploy/secret.yaml
+   kubectl apply -f deploy/postgres-secret.yaml
    kubectl apply -f deploy/deployment.yaml
    kubectl apply -f deploy/service.yaml
+   kubectl apply -f deploy/ingress.yaml
    ```
 
 4. **Acceso a la API**
 
-   - Si usas Minikube, puedes exponer el servicio con:
-     ```bash
-     minikube service debt-management-api-nodeport
-     ```
-   - O bien, consultar el NodePort y acceder desde tu navegador o Postman.
+
+    - Si usas Minikube, puedes exponer el servicio con:
+       ```bash
+       minikube service debt-management-api-nodeport
+       ```
+    - O bien, consultar el NodePort y acceder desde tu navegador o Postman.
+    - Si usas Ingress, asegúrate de tener el tunnel activo y la entrada en tu archivo hosts:
+       ```bash
+       minikube tunnel
+       # y en C:\Windows\System32\drivers\etc\hosts
+       # 127.0.0.1 debt.local
+       ```
+
 
 5. **Swagger**
 
-   Una vez desplegada la API, accede a la documentación interactiva en `/api`.
+   Una vez desplegada la API, accede a la documentación interactiva en `http://debt.local/api/docs`.
+
+## Pruebas unitarias
+
+Ejecuta las pruebas unitarias con:
+
+```bash
+npm run test
+```
+
+La cobertura es del 100% en todos los módulos principales.
 
 ---
 
