@@ -1,4 +1,31 @@
+
 # Debt Management Frontend (Angular)
+
+## Cómo abrir el frontend
+
+Puedes abrir la aplicación de dos formas:
+
+### 1. Modo desarrollo local (recomendado para desarrollo)
+
+Ejecuta el servidor de Angular directamente:
+
+```bash
+npm run start
+# o
+ng serve
+```
+Luego abre tu navegador en: http://localhost:4200
+
+### 2. Usando port-forward de Kubernetes (ideal para pruebas sobre el clúster)
+
+Si tienes desplegado el frontend en Kubernetes, puedes exponerlo localmente con:
+
+```bash
+kubectl port-forward service/debt-management-frontend-service 8081:80
+```
+Luego abre tu navegador en: http://localhost:8081
+
+---
 
 Frontend moderno para la gestión de deudas entre amigos, construido con Angular 16 y Angular Material.
 
