@@ -12,6 +12,8 @@ RUN npm ci --only=production
 # Copy source code
 COPY . .
 
+# Limpiar dist antes del build
+RUN rm -rf dist
 # Build the application
 RUN npm run build
 
