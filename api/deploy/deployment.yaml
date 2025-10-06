@@ -42,6 +42,10 @@ spec:
             secretKeyRef:
               name: api-secrets
               key: jwt-secret
+        - name: REDIS_HOST
+          value: "redis"
+        - name: REDIS_PORT
+          value: "6379"
         resources:
           requests:
             memory: "256Mi"
