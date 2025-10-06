@@ -1,26 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { DebtService } from '../../services/debt.service';
 import { Debt } from '../../models';
 
 @Component({
   selector: 'app-debt-detail',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    MatChipsModule,
-    MatProgressSpinnerModule
-  ],
   templateUrl: './debt-detail.component.html',
   styleUrls: ['./debt-detail.component.scss']
 })
