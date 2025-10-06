@@ -51,13 +51,15 @@ spec:
             cpu: "500m"
         livenessProbe:
           httpGet:
-            path: /
+            path: /api/docs
             port: 3000
           initialDelaySeconds: 60
           periodSeconds: 20
+          timeoutSeconds: 5
         readinessProbe:
           httpGet:
-            path: /
+            path: /api/docs
             port: 3000
           initialDelaySeconds: 20
           periodSeconds: 10
+          timeoutSeconds: 5
