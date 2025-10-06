@@ -1,6 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
 import { of, throwError } from 'rxjs';
 
 import { DebtListComponent } from './debt-list.component';
@@ -37,10 +44,20 @@ describe('DebtListComponent', () => {
     const authSpy = jasmine.createSpyObj('AuthService', ['logout']);
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
+
     await TestBed.configureTestingModule({
       imports: [
-        DebtListComponent,
-        NoopAnimationsModule
+        NoopAnimationsModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatButtonModule,
+        MatCardModule,
+        MatChipsModule
+      ],
+      declarations: [
+        DebtListComponent
       ],
       providers: [
         { provide: DebtService, useValue: debtSpy },

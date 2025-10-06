@@ -38,8 +38,10 @@ describe('DebtDetailComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        DebtDetailComponent,
         NoopAnimationsModule
+      ],
+      declarations: [
+        DebtDetailComponent
       ],
       providers: [
         { provide: DebtService, useValue: debtSpy },

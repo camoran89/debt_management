@@ -1,5 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialogModule } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
@@ -36,9 +42,17 @@ describe('DebtFormComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        DebtFormComponent,
         ReactiveFormsModule,
-        NoopAnimationsModule
+        NoopAnimationsModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatProgressSpinnerModule,
+        MatDialogModule
+      ],
+      declarations: [
+        DebtFormComponent
       ],
       providers: [
         { provide: DebtService, useValue: debtSpy },
