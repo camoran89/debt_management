@@ -149,12 +149,6 @@ Abre tu navegador en: `http://debt-app.local`
 
 ## Arquitectura
 
-### Componentes Standalone
-Todos los componentes son standalone, lo que permite:
-- Carga lazy de módulos
-- Mejor tree-shaking
-- Arquitectura más modular
-
 ### Servicios
 - **AuthService**: Manejo de autenticación, JWT, y estado de usuario
 - **DebtService**: Operaciones CRUD de deudas con la API backend
