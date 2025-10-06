@@ -127,20 +127,32 @@ El despliegue de la API está completamente orientado a Kubernetes. No es necesa
    kubectl apply -f deploy/ingress.yaml
    ```
 
+
 4. **Acceso a la API**
 
+      - **Usando port-forward (recomendado para desarrollo/pruebas):**
+         Puedes acceder a la API localmente usando port-forward de Kubernetes. Ejecuta:
+         ```bash
+         kubectl port-forward service/debt-management-api-service 8080:80
+         ```
+         Esto expondrá la API en `http://localhost:8080`.
+      
+         Ahora puedes probar los endpoints con Postman, cURL o navegador:
+         ```bash
+         curl http://localhost:8080/api/health
+         ```
 
-    - Si usas Minikube, puedes exponer el servicio con:
-       ```bash
-       minikube service debt-management-api-nodeport
-       ```
-    - O bien, consultar el NodePort y acceder desde tu navegador o Postman.
-    - Si usas Ingress, asegúrate de tener el tunnel activo y la entrada en tu archivo hosts:
-       ```bash
-       minikube tunnel
-       # y en C:\Windows\System32\drivers\etc\hosts
-       # 127.0.0.1 debt.local
-       ```
+      - Si usas Minikube, puedes exponer el servicio con:
+         ```bash
+         minikube service debt-management-api-nodeport
+         ```
+      - O bien, consultar el NodePort y acceder desde tu navegador o Postman.
+      - Si usas Ingress, asegúrate de tener el tunnel activo y la entrada en tu archivo hosts:
+         ```bash
+         minikube tunnel
+         # y en C:\Windows\System32\drivers\etc\hosts
+         # 127.0.0.1 debt.local
+         ```
 
 
 5. **Swagger**
