@@ -5,7 +5,7 @@ metadata:
   labels:
     app: debt-management-frontend
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: debt-management-frontend
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: debt-management-frontend:latest
+        image: debt-management-frontend:v3
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
