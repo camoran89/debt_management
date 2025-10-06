@@ -1,27 +1,177 @@
-# App
+# Debt Management Frontend (Angular)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.16.
+Frontend moderno para la gestión de deudas entre amigos, construido con Angular 16 y Angular Material.
 
-## Development server
+## Características
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- **Arquitectura moderna**: Componentes standalone, rutas lazy-loading
+- **UI/UX**: Angular Material con diseño responsivo y minimalista
+- **Funcionalidades**:
+  - Pantalla de Login/Registro con validación
+  - Listado de deudas con filtros (pendientes/pagadas)
+  - Formulario para crear/editar deudas
+  - Vista de detalle de deuda con acciones
+  - Navegación fluida entre pantallas
+- **Pruebas**: Pruebas unitarias para todos los componentes
+- **Producción**: Listo para despliegue en Docker/Kubernetes
 
-## Code scaffolding
+## Estructura del proyecto
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```
+app/
+├── src/
+│   ├── app/
+│   │   ├── pages/
+│   │   │   ├── login/
+│   │   │   │   ├── login.component.ts
+│   │   │   │   ├── login.component.html
+│   │   │   │   ├── login.component.scss
+│   │   │   │   └── login.component.spec.ts
+│   │   │   ├── debt-list/
+│   │   │   │   ├── debt-list.component.ts
+│   │   │   │   ├── debt-list.component.html
+│   │   │   │   ├── debt-list.component.scss
+│   │   │   │   └── debt-list.component.spec.ts
+│   │   │   ├── debt-form/
+│   │   │   │   └── ... (similar structure)
+│   │   │   └── debt-detail/
+│   │   │       └── ... (similar structure)
+│   │   ├── services/
+│   │   │   ├── auth.service.ts
+│   │   │   ├── auth.service.spec.ts
+│   │   │   ├── debt.service.ts
+│   │   │   └── debt.service.spec.ts
+│   │   ├── app.config.ts
+│   │   ├── app.routes.ts
+│   │   └── app.component.ts
+│   └── ...
+├── deploy/
+│   ├── deployment.yaml
+│   ├── service.yaml
+│   └── ingress.yaml
+├── Dockerfile
+├── nginx.conf
+└── README.md
+```
 
-## Build
+## Desarrollo local
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Prerrequisitos
+- Node.js 18+
+- Angular CLI 16+
 
-## Running unit tests
+### Instalación
+```bash
+npm install
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Servidor de desarrollo
+```bash
+npm start
+# o
+ng serve
+```
 
-## Running end-to-end tests
+Navega a `http://localhost:4200/`. La aplicación se recargará automáticamente si cambias algún archivo.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Pruebas unitarias
+```bash
+npm test
+# o
+ng test
+```
 
-## Further help
+### Build de producción
+```bash
+npm run build
+# o
+ng build --configuration production
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Despliegue en Kubernetes
+
+### 1. Construir la imagen Docker
+```bash
+docker build -t debt-management-frontend:latest .
+```
+
+### 2. Cargar imagen en Minikube (si usas Minikube)
+```bash
+minikube image load debt-management-frontend:latest
+```
+
+### 3. Aplicar manifiestos de Kubernetes
+```bash
+kubectl apply -f deploy/deployment.yaml
+kubectl apply -f deploy/service.yaml
+kubectl apply -f deploy/ingress.yaml
+```
+
+### 4. Configurar acceso (Minikube)
+- Agregar a `C:\Windows\System32\drivers\etc\hosts`:
+  ```
+  127.0.0.1 debt-app.local
+  ```
+- Ejecutar el tunnel:
+  ```bash
+  minikube tunnel
+  ```
+
+### 5. Acceder a la aplicación
+Abre tu navegador en: `http://debt-app.local`
+
+## Arquitectura
+
+### Componentes Standalone
+Todos los componentes son standalone, lo que permite:
+- Carga lazy de módulos
+- Mejor tree-shaking
+- Arquitectura más modular
+
+### Servicios
+- **AuthService**: Manejo de autenticación, JWT, y estado de usuario
+- **DebtService**: Operaciones CRUD de deudas con la API backend
+
+### Rutas
+- `/login` - Pantalla de login/registro
+- `/debts` - Listado principal de deudas
+- `/debt-form` - Crear nueva deuda
+- `/debt-form/:id` - Editar deuda existente
+- `/debt-detail/:id` - Ver detalle de deuda
+
+### Angular Material Components
+- MatCard, MatButton, MatFormField, MatInput
+- MatSelect, MatChips, MatProgressSpinner
+- MatToolbar, MatIcon
+
+## API Integration
+
+El frontend se conecta a la API backend en:
+- **Desarrollo**: `http://localhost:3000/api`
+- **Producción**: `http://debt.local/api`
+
+### Endpoints utilizados
+- `POST /auth/login` - Autenticación
+- `POST /users/register` - Registro de usuarios
+- `GET /debts` - Listar deudas del usuario
+- `POST /debts` - Crear nueva deuda
+- `GET /debts/:id` - Obtener deuda específica
+- `PATCH /debts/:id` - Actualizar deuda
+- `PATCH /debts/:id/pay` - Marcar deuda como pagada
+- `DELETE /debts/:id` - Eliminar deuda
+
+## Tecnologías utilizadas
+
+- **Angular 16**: Framework principal
+- **Angular Material 16**: Componentes de UI
+- **TypeScript**: Lenguaje de desarrollo
+- **RxJS**: Programación reactiva
+- **SCSS**: Preprocesador CSS
+- **Jasmine & Karma**: Testing framework
+- **Docker**: Containerización
+- **Nginx**: Servidor web de producción
+- **Kubernetes**: Orquestación de contenedores
+
+---
+
+**Desarrollado con Angular 16, Angular Material y buenas prácticas de desarrollo moderno.**

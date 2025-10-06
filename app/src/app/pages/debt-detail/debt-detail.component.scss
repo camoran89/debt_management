@@ -1,0 +1,112 @@
+.detail-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 24px 16px;
+}
+
+.detail-card {
+  max-width: 600px;
+  width: 100%;
+  padding: 24px;
+}
+
+.debt-info {
+  margin: 24px 0;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  
+  mat-icon {
+    color: #666;
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+  
+  h4 {
+    margin: 0 0 4px 0;
+    color: #333;
+    font-weight: 500;
+  }
+  
+  p {
+    margin: 0;
+    color: #666;
+  }
+}
+
+.amount {
+  font-size: 28px !important;
+  font-weight: bold !important;
+  color: #2196F3 !important;
+  
+  &.paid {
+    text-decoration: line-through;
+    color: #4CAF50 !important;
+  }
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.actions-right {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  gap: 16px;
+  color: #666;
+}
+
+mat-card-title {
+  color: #333;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .detail-container {
+    padding: 16px 8px;
+  }
+  
+  .detail-card {
+    padding: 16px;
+  }
+  
+  mat-card-actions {
+    flex-direction: column;
+    align-items: stretch;
+    
+    .actions-right {
+      justify-content: stretch;
+      
+      button {
+        flex: 1;
+      }
+    }
+  }
+  
+  .amount {
+    font-size: 24px !important;
+  }
+}

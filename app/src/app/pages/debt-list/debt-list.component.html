@@ -1,0 +1,59 @@
+<div class="debt-list-container">
+  <mat-toolbar color="primary">
+    <span>Gestión de Deudas</span>
+    <span class="spacer"></span>
+    <button mat-icon-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <div class="content">
+    <div class="filters">
+      <mat-form-field appearance="outline">
+        <mat-label>Filtrar por estado</mat-label>
+        <mat-select [(value)]="selectedFilter" (selectionChange)="filterDebts()">
+          <mat-option value="all">Todas</mat-option>
+          <mat-option value="pending">Pendientes</mat-option>
+          <mat-option value="paid">Pagadas</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-fab color="accent" class="add-button" (click)="addDebt()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    <div class="debt-cards" *ngIf="filteredDebts.length > 0; else noDebts">
+      <mat-card *ngFor="let debt of filteredDebts" class="debt-card" 
+                [class.paid]="debt.isPaid" (click)="viewDetail(debt)">
+        <mat-card-header>
+          <mat-card-title>{{ debt.description }}</mat-card-title>
+          <mat-card-subtitle>
+            <mat-chip [color]="debt.isPaid ? 'primary' : 'warn'" selected>
+              {{ debt.isPaid ? 'Pagada' : 'Pendiente' }}
+            </mat-chip>
+          </mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <p class="amount">{{ debt.amount | currency:'USD':'symbol':'1.2-2' }}</p>
+          <p class="date">{{ debt.createdAt | date:'dd/MM/yyyy' }}</p>
+        </mat-card-content>
+        
+        <mat-card-actions *ngIf="!debt.isPaid">
+          <button mat-button color="primary" (click)="payDebt(debt, $event)">
+            Marcar como pagada
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <ng-template #noDebts>
+      <div class="no-debts">
+        <mat-icon>account_balance_wallet</mat-icon>
+        <h3>No hay deudas {{ selectedFilter === 'all' ? '' : selectedFilter === 'pending' ? 'pendientes' : 'pagadas' }}</h3>
+        <p>{{ selectedFilter === 'pending' ? 'Todas las deudas están pagadas' : 'Agrega una nueva deuda para comenzar' }}</p>
+      </div>
+    </ng-template>
+  </div>
+</div>
