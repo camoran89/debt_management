@@ -14,6 +14,12 @@ const mockDebtRepository = {
   delete: jest.fn(),
 };
 
+const mockRedis = {
+  get: jest.fn(),
+  set: jest.fn(),
+  del: jest.fn(),
+};
+
 describe('DebtService', () => {
   let service: DebtService;
   let createDebtUseCase: CreateDebtUseCase;
@@ -21,7 +27,13 @@ describe('DebtService', () => {
   let payDebtUseCase: PayDebtUseCase;
 
   beforeEach(async () => {
-  const mockPayDebtUseCase = { execute: jest.fn() } as any;
+    const mockPayDebtUseCase = { execute: jest.fn() } as any;
+    jest.resetModules();
+    jest.clearAllMocks();
+    // Mock Redis in DebtService
+    jest.mock('ioredis', () => {
+      return jest.fn().mockImplementation(() => mockRedis);
+    });
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         DebtService,
@@ -42,6 +54,8 @@ describe('DebtService', () => {
     createDebtUseCase = module.get<CreateDebtUseCase>(CreateDebtUseCase);
     debtRepository = module.get<IDebtRepository>(DEBT_REPOSITORY_TOKEN);
     payDebtUseCase = module.get<PayDebtUseCase>(PayDebtUseCase);
+    // @ts-ignore
+    service.redis = mockRedis;
   });
 
   afterEach(() => {
@@ -73,12 +87,14 @@ describe('DebtService', () => {
   });
 
   it('should throw NotFoundException if debt not found', async () => {
+    mockRedis.get.mockResolvedValue(null);
     mockDebtRepository.findById.mockResolvedValue(null);
     await expect(service.findOne(1)).rejects.toThrow('Deuda no encontrada');
   });
 
   it('should update a debt', async () => {
     const debt = { id: 1, is_paid: false };
+    mockRedis.get.mockResolvedValue(null);
     mockDebtRepository.findById.mockResolvedValue(debt);
     mockDebtRepository.save.mockResolvedValue({ ...debt, amount: 200 });
     const result = await service.update(1, { amount: 200 });
@@ -87,12 +103,14 @@ describe('DebtService', () => {
 
   it('should throw ForbiddenException if updating a paid debt', async () => {
     const debt = { id: 1, is_paid: true };
+    mockRedis.get.mockResolvedValue(null);
     mockDebtRepository.findById.mockResolvedValue(debt);
     await expect(service.update(1, { amount: 200 })).rejects.toThrow('No se puede modificar una deuda pagada');
   });
 
   it('should remove a debt', async () => {
     const debt = { id: 1, is_paid: false };
+    mockRedis.get.mockResolvedValue(null);
     mockDebtRepository.findById.mockResolvedValue(debt);
     mockDebtRepository.delete.mockResolvedValue(undefined);
     await expect(service.remove(1)).resolves.toBeUndefined();
@@ -101,6 +119,7 @@ describe('DebtService', () => {
 
   it('should throw ForbiddenException if removing a paid debt', async () => {
     const debt = { id: 1, is_paid: true };
+    mockRedis.get.mockResolvedValue(null);
     mockDebtRepository.findById.mockResolvedValue(debt);
     await expect(service.remove(1)).rejects.toThrow('No se puede eliminar una deuda pagada');
   });
