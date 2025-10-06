@@ -15,7 +15,7 @@ COPY . .
 # Limpiar dist antes del build
 RUN rm -rf dist
 # Build the application
-RUN npm run build
+RUN npm run build -- --base-href="/"
 
 # Production stage
 FROM nginx:alpine
